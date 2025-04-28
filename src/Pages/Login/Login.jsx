@@ -40,6 +40,11 @@ const Login = () => {
 
   const handleForgotPassword = () => {
     const resetPassword = emailRef.current.value;
+    if (!resetPassword) {
+      alert("Please add your mail");
+      return;
+    }
+    setError("");
     sendPasswordResetEmail(auth, resetPassword)
       .then(() => {
         alert("A password reset mail is sent. Please check your email.");
