@@ -1,4 +1,7 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+} from "firebase/auth";
 import React, { useState } from "react";
 import { auth } from "../../firebase.init";
 import { FaEye } from "react-icons/fa";
@@ -48,8 +51,11 @@ const Register = () => {
 
     createUserWithEmailAndPassword(auth, emailLowerCase, password)
       .then((result) => {
-        e.target.reset();
-        setSuccess(true);
+        sendEmailVerification(auth.currentUser).then(() => {
+          e.target.reset();
+          setSuccess(true);
+          alert("We sent you verification email. please check your email");
+        });
       })
       .catch((error) => {
         if (error.code === "auth/email-already-in-use") {
